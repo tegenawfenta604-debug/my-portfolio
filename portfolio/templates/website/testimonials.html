@@ -1,0 +1,28 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Testimonials{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>Client Testimonials</h2></div>
+        <div class="row g-4">
+            {% for t in testimonials %}
+                <div class="col-md-6 col-lg-4 reveal">
+                    <div class="testimonial-card">
+                        <i class="bi bi-quote quote-icon"></i>
+                        <div class="mb-2">
+                            {% for i in "12345" %}<i class="bi bi-star-fill text-warning"></i>{% endfor %}
+                        </div>
+                        <p class="text-secondary">{{ t.quote|linebreaks }}</p>
+                        <div class="d-flex align-items-center gap-2 mt-3">
+                            {% if t.photo %}<img src="{{ t.photo.url }}" class="rounded-circle" width="48" height="48" alt="{{ t.name }}">{% endif %}
+                            <div><strong>{{ t.name }}</strong><div class="small text-secondary">{{ t.role }}{% if t.company %}, {{ t.company }}{% endif %}</div></div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}<div class="col-12 text-center text-secondary">No testimonials yet.</div>{% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

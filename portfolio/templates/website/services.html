@@ -1,0 +1,24 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Services{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>Services</h2></div>
+        <div class="row g-4">
+            {% for service in services %}
+                <div class="col-md-6 col-lg-4 reveal">
+                    <div class="feature-card p-4 h-100">
+                        <div class="feature-icon"><i class="bi {% if service.icon %}{{ service.icon }}{% else %}bi-stars{% endif %}"></i></div>
+                        <h5>{{ service.title }}</h5>
+                        <p class="text-secondary mb-0">{{ service.description|linebreaks }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center text-secondary">No services listed yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

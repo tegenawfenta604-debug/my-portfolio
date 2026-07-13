@@ -1,0 +1,31 @@
+{% extends 'website/base.html' %}
+
+{% block title %}FAQ{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>Frequently Asked Questions</h2></div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion reveal" id="faqAccordion">
+                    {% for faq in faqs %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="fh{{ forloop.counter }}">
+                                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#fc{{ forloop.counter }}">
+                                    {{ faq.question }}
+                                </button>
+                            </h2>
+                            <div id="fc{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-secondary">{{ faq.answer|linebreaks }}</div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-secondary text-center">No FAQs yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
