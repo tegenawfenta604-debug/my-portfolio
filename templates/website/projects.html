@@ -1,0 +1,38 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>My Projects</h2></div>
+        <div id="projectFilters" class="text-center mb-4 reveal">
+            <button class="filter-btn active" data-filter="all">All</button>
+            {% for cat in project_categories %}
+                <button class="filter-btn" data-filter="{{ cat.slug }}">{{ cat.name }}</button>
+            {% endfor %}
+        </div>
+        <div class="row g-4">
+            {% for project in projects %}
+                <div class="col-md-6 col-lg-4 reveal" data-category="{% if project.category %}{{ project.category.slug }}{% else %}uncategorized{% endif %}">
+                    <div class="project-card">
+                        {% if project.image %}<img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">{% endif %}
+                        <div class="p-3">
+                            {% if project.category %}<span class="badge text-bg-light mb-2">{{ project.category.name }}</span>{% endif %}
+                            <h5>{{ project.title }}</h5>
+                            <p class="text-secondary small">{{ project.short_description|default:"" }}</p>
+                            <div class="d-flex gap-3">
+                                <a href="{{ project.get_absolute_url }}" class="text-brand fw-semibold">Details</a>
+                                {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank" class="text-brand"><i class="bi bi-box-arrow-up-right"></i> Live</a>{% endif %}
+                                {% if project.github_url %}<a href="{{ project.github_url }}" target="_blank" class="text-brand"><i class="bi bi-github"></i> Code</a>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center text-secondary">No projects yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

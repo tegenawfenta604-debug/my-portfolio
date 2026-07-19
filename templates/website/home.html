@@ -1,0 +1,394 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}{% if profile %}{{ profile.user.get_full_name }} - Portfolio{% else %}My Portfolio{% endif %}{% endblock %}
+{% block description %}{{ profile.bio|default:"Professional portfolio showcasing projects, skills, and experience." }}{% endblock %}
+
+{% block content %}
+<section class="ph-hero" id="home">
+    <!-- Immersive animated background -->
+    <canvas id="ph-bg-canvas" class="ph-bg-canvas" aria-hidden="true"></canvas>
+    <div class="ph-blobs" aria-hidden="true">
+        <span class="ph-blob ph-blob-1"></span>
+        <span class="ph-blob ph-blob-2"></span>
+        <span class="ph-blob ph-blob-3"></span>
+    </div>
+    <div class="ph-shapes" id="phShapes" aria-hidden="true">
+        <span class="ph-shape ph-shape-tri" data-depth="3"></span>
+        <span class="ph-shape ph-shape-ring" data-depth="5"></span>
+        <span class="ph-shape ph-shape-sq" data-depth="2"></span>
+        <span class="ph-shape ph-shape-plus" data-depth="4"></span>
+        <span class="ph-shape ph-shape-dot" data-depth="6"></span>
+    </div>
+    <!-- Cursor glow -->
+    <div class="ph-cursor-glow" id="phCursorGlow" aria-hidden="true"></div>
+
+    <div class="container ph-container">
+        <div class="row align-items-center g-5" id="phHeroInner">
+
+            <!-- ================= LEFT: intro ================= -->
+            <div class="col-lg-6 ph-intro" data-aos="fade-right" data-aos-duration="1000">
+                <p class="ph-greeting"><span class="ph-wave">&#128075;</span> Hello, I'm</p>
+                <h1 class="ph-name">{{ profile.user.get_full_name|default:"Tegenaw Fenta" }}</h1>
+                <h2 class="ph-role">
+                    I'm a <span class="ph-typed" id="typed"
+                        data-words="Python Developer,Django Developer,Full Stack Developer,AI Enthusiast">Python Developer</span><span class="ph-caret"></span>
+                </h2>
+                <p class="ph-bio">{{ profile.bio|default:"I build modern, scalable, responsive web applications using Python, Django, JavaScript, Bootstrap, REST APIs, and PostgreSQL. I craft beautiful user experiences with clean code and high performance." }}</p>
+
+                <div class="ph-actions">
+                    <a href="#contact" class="ph-btn ph-btn-primary"><i class="bi bi-send-fill"></i> Hire Me</a>
+                    {% if profile.cv %}
+                        <a href="{{ profile.cv.url }}" class="ph-btn ph-btn-secondary" download><i class="bi bi-download"></i> Download CV</a>
+                    {% else %}
+                        <a href="#" class="ph-btn ph-btn-secondary"><i class="bi bi-download"></i> Download CV</a>
+                    {% endif %}
+                </div>
+
+                <!-- Animated statistics -->
+                <div class="ph-stats">
+                    <div class="ph-stat">
+                        <div class="ph-stat-num"><span class="count-up" data-target="3">0</span><span class="ph-stat-suffix">+</span></div>
+                        <p class="ph-stat-label">Years Experience</p>
+                    </div>
+                    <div class="ph-stat">
+                        <div class="ph-stat-num"><span class="count-up" data-target="20">0</span><span class="ph-stat-suffix">+</span></div>
+                        <p class="ph-stat-label">Projects</p>
+                    </div>
+                    <div class="ph-stat">
+                        <div class="ph-stat-num"><span class="count-up" data-target="100">0</span><span class="ph-stat-suffix">%</span></div>
+                        <p class="ph-stat-label">Client Satisfaction</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= RIGHT: profile with orbiting tech ================= -->
+            <div class="col-lg-6 ph-visual" data-aos="fade-left" data-aos-duration="1000">
+                <div class="ph-avatar-stage" id="phStage">
+                    <span class="ph-pulse"></span>
+                    <span class="ph-ring ph-ring-1"></span>
+                    <span class="ph-ring ph-ring-2"></span>
+
+                    <!-- Orbiting tech icons -->
+                    <div class="ph-orbit-ring ph-orbit-inner">
+                        <span class="ph-tech" style="--a:0deg"><span class="ph-tech-spin"><i class="devicon-python-plain colored"></i></span></span>
+                        <span class="ph-tech" style="--a:72deg"><span class="ph-tech-spin"><i class="devicon-django-plain" style="color:#2BA977"></i></span></span>
+                        <span class="ph-tech" style="--a:144deg"><span class="ph-tech-spin"><i class="devicon-javascript-plain colored"></i></span></span>
+                        <span class="ph-tech" style="--a:216deg"><span class="ph-tech-spin"><i class="devicon-html5-plain colored"></i></span></span>
+                        <span class="ph-tech" style="--a:288deg"><span class="ph-tech-spin"><i class="devicon-css3-plain colored"></i></span></span>
+                    </div>
+                    <div class="ph-orbit-ring ph-orbit-outer">
+                        <span class="ph-tech" style="--a:45deg"><span class="ph-tech-spin"><i class="devicon-bootstrap-plain colored"></i></span></span>
+                        <span class="ph-tech" style="--a:135deg"><span class="ph-tech-spin"><i class="devicon-git-plain colored"></i></span></span>
+                        <span class="ph-tech" style="--a:225deg"><span class="ph-tech-spin"><i class="devicon-docker-plain colored"></i></span></span>
+                        <span class="ph-tech" style="--a:315deg"><span class="ph-tech-spin"><i class="devicon-postgresql-plain colored"></i></span></span>
+                    </div>
+
+                    <div class="ph-avatar">
+                        {% if profile.photo %}
+                            <img src="{{ profile.photo.url }}" alt="{{ profile.user.get_full_name|default:'Tegenaw Fenta' }}" class="ph-avatar-img">
+                        {% else %}
+                            <div class="ph-avatar-placeholder"><i class="bi bi-person-fill"></i></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#features" class="ph-scroll-down" aria-label="Scroll down"><i class="bi bi-chevron-double-down"></i></a>
+</section>
+
+<!-- ================= Feature cards ================= -->
+<section class="ph-features" id="features">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+                <div class="ph-feature">
+                    <div class="ph-feature-icon">&#128640;</div>
+                    <h3 class="ph-feature-title">Fast Development</h3>
+                    <p class="ph-feature-text">Modern Django applications built quickly with clean, maintainable architecture.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="ph-feature">
+                    <div class="ph-feature-icon">&#128187;</div>
+                    <h3 class="ph-feature-title">Full Stack</h3>
+                    <p class="ph-feature-text">End-to-end frontend and backend expertise for complete products.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="ph-feature">
+                    <div class="ph-feature-icon">&#129302;</div>
+                    <h3 class="ph-feature-title">AI Solutions</h3>
+                    <p class="ph-feature-text">Machine Learning and AI integration to power intelligent features.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="ph-feature">
+                    <div class="ph-feature-icon">&#9729;&#65039;</div>
+                    <h3 class="ph-feature-title">Cloud Ready</h3>
+                    <p class="ph-feature-text">Deployable on AWS, Render, Railway and Docker with confidence.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="stats">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3"><div class="stat-card reveal"><div class="stat-number count-up" data-target="{{ stats.projects }}">0</div><p class="text-secondary mb-0">Projects</p></div></div>
+            <div class="col-6 col-md-3"><div class="stat-card reveal"><div class="stat-number count-up" data-target="{{ stats.experience }}">0</div><p class="text-secondary mb-0">Experiences</p></div></div>
+            <div class="col-6 col-md-3"><div class="stat-card reveal"><div class="stat-number count-up" data-target="{{ stats.clients }}">0</div><p class="text-secondary mb-0">Clients</p></div></div>
+            <div class="col-6 col-md-3"><div class="stat-card reveal"><div class="stat-number count-up" data-target="{{ stats.certifications }}">0</div><p class="text-secondary mb-0">Certifications</p></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="about-preview">
+    <div class="container">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-6 reveal">
+                <h2 class="fw-bold">About Me</h2>
+                <p class="text-secondary">{{ profile.bio|default:""|linebreaks }}</p>
+                <a href="{% url 'about' %}" class="btn btn-brand">Read More</a>
+            </div>
+            <div class="col-lg-6 reveal">
+                <h5 class="mb-3">My Skills</h5>
+                {% for skill in skills|slice:":6" %}
+                    <div class="skill-item">
+                        <div class="d-flex justify-content-between"><span>{{ skill.name }}</span><span>{{ skill.level }}%</span></div>
+                        <div class="skill-bar"><div class="fill" data-level="{{ skill.level }}"></div></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="services-preview">
+    <div class="container">
+        <div class="section-title reveal"><h2>What I Do</h2></div>
+        <div class="row g-4">
+            {% for service in services %}
+                <div class="col-md-6 col-lg-4 reveal">
+                    <div class="feature-card p-4">
+                        <div class="feature-icon"><i class="bi {% if service.icon %}{{ service.icon }}{% else %}bi-stars{% endif %}"></i></div>
+                        <h5>{{ service.title }}</h5>
+                        <p class="text-secondary mb-0">{{ service.description|truncatewords:20 }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section" id="projects-preview">
+    <div class="container">
+        <div class="section-title reveal"><h2>Featured Projects</h2></div>
+        <div class="row g-4">
+            {% for project in featured_projects %}
+                <div class="col-md-6 col-lg-4 reveal">
+                    <div class="project-card">
+                        {% if project.image %}<img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">{% endif %}
+                        <div class="p-3">
+                            <h5>{{ project.title }}</h5>
+                            <p class="text-secondary small">{{ project.short_description|default:"" }}</p>
+                            <a href="{{ project.get_absolute_url }}" class="text-brand fw-semibold">View Project <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'projects' %}" class="btn btn-outline-secondary">All Projects</a>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="testimonials-preview">
+    <div class="container">
+        <div class="section-title reveal"><h2>What Clients Say</h2></div>
+        <div class="row g-4">
+            {% for t in testimonials %}
+                <div class="col-md-6 col-lg-4 reveal">
+                    <div class="testimonial-card">
+                        <i class="bi bi-quote quote-icon"></i>
+                        <p class="text-secondary">{{ t.quote }}</p>
+                        <div class="d-flex align-items-center gap-2 mt-3">
+                            {% if t.photo %}<img src="{{ t.photo.url }}" class="rounded-circle" width="48" height="48">{% endif %}
+                            <div><strong>{{ t.name }}</strong><div class="small text-secondary">{{ t.role }}{% if t.company %}, {{ t.company }}{% endif %}</div></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section" id="blog-preview">
+    <div class="container">
+        <div class="section-title reveal"><h2>Latest Articles</h2></div>
+        <div class="row g-4">
+            {% for post in recent_posts %}
+                <div class="col-md-4 reveal">
+                    <div class="blog-card">
+                        {% if post.featured_image %}<img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">{% endif %}
+                        <div class="p-3">
+                            <h6>{{ post.title }}</h6>
+                            <p class="text-secondary small">{{ post.excerpt|default:""|truncatewords:15 }}</p>
+                            <a href="{{ post.get_absolute_url }}" class="text-brand">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ================= Contact ================= -->
+<section class="ph-contact" id="contact">
+    <div class="container">
+        <div class="ph-section-head" data-aos="fade-up">
+            <span class="ph-eyebrow">Get in touch</span>
+            <h2 class="ph-contact-title">Let's Work Together</h2>
+            <p class="ph-contact-sub">Have a project in mind? Reach out and let's build something great.</p>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <!-- Left: details + map -->
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="ph-contact-info">
+                    <ul class="ph-contact-list">
+                        <li>
+                            <span class="ph-ci-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                            <div><span class="ph-ci-label">Location</span><span class="ph-ci-value">{{ profile.location|default:"Gondar, Ethiopia" }}</span></div>
+                        </li>
+                        <li>
+                            <span class="ph-ci-icon"><i class="bi bi-envelope-fill"></i></span>
+                            <div><span class="ph-ci-label">Email</span>
+                                <a class="ph-ci-value" href="mailto:{{ profile.user.email|default:'you@example.com' }}">{{ profile.user.email|default:"you@example.com" }}</a>
+                            </div>
+                        </li>
+                        {% if profile.phone %}
+                        <li>
+                            <span class="ph-ci-icon"><i class="bi bi-telephone-fill"></i></span>
+                            <div><span class="ph-ci-label">Phone</span>
+                                <a class="ph-ci-value" href="tel:{{ profile.phone }}">{{ profile.phone }}</a>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                    <div class="ph-contact-socials">
+                        {% for link in hero_socials %}
+                            <a href="{{ link.url }}" target="_blank" rel="noopener" class="ph-social" aria-label="{{ link.label|default:link.platform }}">
+                                <i class="bi {% if link.icon %}{{ link.icon }}{% else %}bi-link-45deg{% endif %}"></i>
+                            </a>
+                        {% empty %}
+                            <a href="#" class="ph-social" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                            <a href="#" class="ph-social" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            <a href="#" class="ph-social" aria-label="Telegram"><i class="bi bi-telegram"></i></a>
+                            <a href="#" class="ph-social" aria-label="Email"><i class="bi bi-envelope-fill"></i></a>
+                        {% endfor %}
+                    </div>
+
+                    <div class="ph-map-card">
+                        <div class="ph-map-head">
+                            <span class="ph-map-title"><i class="bi bi-pin-map-fill"></i> Based in {{ profile.location|default:"Gondar, Ethiopia" }}</span>
+                            <span class="ph-map-flag" aria-hidden="true">
+                                <i class="ph-flag-green"></i><i class="ph-flag-yellow"></i><i class="ph-flag-red"></i>
+                            </span>
+                        </div>
+                        <div class="ph-map-frame">
+                            <iframe
+                                title="Map showing Gondar, Ethiopia"
+                                src="https://www.openstreetmap.org/export/embed.html?bbox=36.6%2C11.9%2C38.3%2C13.2&amp;layer=mapnik&amp;marker=12.6030%2C37.4521"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <span class="ph-map-pin"><i class="bi bi-geo-alt-fill"></i></span>
+                        </div>
+                        <a class="ph-map-link" href="https://www.openstreetmap.org/?mlat=12.6030&amp;mlon=37.4521#map=11/12.6030/37.4521" target="_blank" rel="noopener">
+                            View Gondar on the map <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: contact form -->
+            <div class="col-lg-6" data-aos="fade-left">
+                <form class="ph-contact-form" id="phContactForm" method="post" action="{% url 'contact' %}">
+                    {% csrf_token %}
+                    <div class="ph-form-status" id="phFormStatus" role="status" aria-live="polite"></div>
+                    <div class="ph-field">
+                        <label for="cf-name">Name</label>
+                        <input type="text" id="cf-name" name="name" required placeholder="Your name">
+                    </div>
+                    <div class="ph-field">
+                        <label for="cf-email">Email</label>
+                        <input type="email" id="cf-email" name="email" required placeholder="you@example.com">
+                    </div>
+                    <div class="ph-field">
+                        <label for="cf-subject">Subject</label>
+                        <input type="text" id="cf-subject" name="subject" placeholder="What's this about?">
+                    </div>
+                    <div class="ph-field">
+                        <label for="cf-message">Message</label>
+                        <textarea id="cf-message" name="message" rows="5" required placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    <input type="text" name="website" tabindex="-1" autocomplete="off" class="d-none" aria-hidden="true">
+                    <button type="submit" class="ph-btn ph-btn-primary w-100 justify-content-center"><i class="bi bi-send-fill"></i> Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var form = document.getElementById('phContactForm');
+    if (!form) return;
+    var statusEl = document.getElementById('phFormStatus');
+    var btn = form.querySelector('button[type="submit"]');
+    var btnHTML = btn ? btn.innerHTML : '';
+
+    function show(type, msg) {
+        statusEl.className = 'ph-form-status show ' + type;
+        statusEl.innerHTML = (type === 'success'
+            ? '<i class="bi bi-check-circle-fill"></i> '
+            : '<i class="bi bi-exclamation-triangle-fill"></i> ') + msg;
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        statusEl.className = 'ph-form-status';
+        if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat ph-spin"></i> Sending...'; }
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            body: new FormData(form)
+        })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+            if (res.ok && res.data.success) {
+                show('success', res.data.message || 'Message sent successfully!');
+                form.reset();
+            } else {
+                var msg = 'Please check your details and try again.';
+                if (res.data && res.data.errors) {
+                    var first = Object.keys(res.data.errors)[0];
+                    if (first) msg = res.data.errors[first][0] || msg;
+                }
+                show('error', msg);
+            }
+        })
+        .catch(function () { show('error', 'Network error. Please try again.'); })
+        .finally(function () { if (btn) { btn.disabled = false; btn.innerHTML = btnHTML; } });
+    });
+})();
+</script>
+{% endblock %}

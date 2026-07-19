@@ -1,0 +1,24 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Certifications{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>Certifications</h2></div>
+        <div class="row g-4">
+            {% for c in certifications %}
+                <div class="col-md-6 col-lg-4 reveal">
+                    <div class="feature-card p-4 h-100">
+                        <div class="feature-icon"><i class="bi bi-award"></i></div>
+                        <h5>{{ c.name }}</h5>
+                        <p class="text-secondary mb-1">{{ c.issuer }} · {{ c.date|date:"M Y" }}</p>
+                        {% if c.credential_id %}<small class="text-secondary">ID: {{ c.credential_id }}</small>{% endif %}
+                        {% if c.url %}<div class="mt-2"><a href="{{ c.url }}" target="_blank" class="text-brand">Verify <i class="bi bi-box-arrow-up-right"></i></a></div>{% endif %}
+                    </div>
+                </div>
+            {% empty %}<div class="col-12 text-center text-secondary">No certifications listed yet.</div>{% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

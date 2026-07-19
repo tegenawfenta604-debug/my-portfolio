@@ -1,0 +1,25 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Skills{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>My Skills</h2></div>
+        <div class="row g-4">
+            {% regroup skills by category as skill_groups %}
+            {% for group in skill_groups %}
+                <div class="col-lg-6 reveal">
+                    <h5 class="mb-3 text-capitalize">{{ group.grouper }}</h5>
+                    {% for skill in group.list %}
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between"><span>{{ skill.name }}</span><span>{{ skill.level }}%</span></div>
+                            <div class="skill-bar"><div class="fill" data-level="{{ skill.level }}"></div></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

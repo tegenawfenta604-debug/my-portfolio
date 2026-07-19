@@ -1,0 +1,41 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}About Me{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>About Me</h2></div>
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-5 text-center reveal">
+                {% if profile.photo %}
+                    <img src="{{ profile.photo.url }}" alt="Profile" class="img-fluid rounded-4 shadow" style="max-width:340px;">
+                {% else %}
+                    <div class="d-inline-flex align-items-center justify-content-center bg-secondary-subtle rounded-4" style="width:340px;height:340px;"><i class="bi bi-person-fill" style="font-size:8rem;"></i></div>
+                {% endif %}
+            </div>
+            <div class="col-lg-7 reveal">
+                <h3>{{ profile.user.get_full_name|default:profile.user.username }}</h3>
+                <p class="text-brand fw-semibold">{{ profile.title|default:"" }}</p>
+                {% if profile.available_for_work %}<span class="badge text-bg-success mb-3">Available for work</span>{% endif %}
+                <p class="text-secondary">{{ profile.bio|default:""|linebreaks }}</p>
+                <ul class="list-unstyled">
+                    {% if profile.location %}<li><i class="bi bi-geo-alt text-brand"></i> {{ profile.location }}</li>{% endif %}
+                    {% if profile.phone %}<li><i class="bi bi-telephone text-brand"></i> {{ profile.phone }}</li>{% endif %}
+                    <li><i class="bi bi-envelope text-brand"></i> {{ profile.user.email }}</li>
+                </ul>
+                <div class="d-flex gap-2 flex-wrap">
+                    {% if profile.cv %}<a href="{{ profile.cv.url }}" class="btn btn-brand" download>Download CV</a>{% endif %}
+                    <a href="{% url 'contact' %}" class="btn btn-outline-secondary">Contact Me</a>
+                </div>
+                <div class="social-links mt-3">
+                    {% for link in social_links %}
+                        <a href="{{ link.url }}" target="_blank" rel="noopener" class="social-link"><i class="bi {% if link.icon %}{{ link.icon }}{% else %}bi-link-45deg{% endif %}"></i></a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

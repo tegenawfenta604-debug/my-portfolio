@@ -1,0 +1,14 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+<section class="section pt-5 text-center">
+    <div class="container">
+        <div class="error-code">404</div>
+        <h2>Oops! Page Not Found</h2>
+        <p class="text-secondary">The page you are looking for might have been removed or is temporarily unavailable.</p>
+        <a href="{% url 'home' %}" class="btn btn-brand mt-3">Back to Home</a>
+    </div>
+</section>
+{% endblock %}

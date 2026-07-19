@@ -1,0 +1,21 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Education{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>Education</h2></div>
+        <div class="timeline">
+            {% for edu in educations %}
+                <div class="timeline-item reveal">
+                    <h5 class="mb-1">{{ edu.degree }}{% if edu.field %} in {{ edu.field }}{% endif %}</h5>
+                    <h6 class="text-brand">{{ edu.school }}</h6>
+                    <small class="text-secondary">{{ edu.start_date|date:"Y" }} - {% if edu.current %}Present{% else %}{{ edu.end_date|date:"Y" }}{% endif %}</small>
+                    <p class="text-secondary mt-2">{{ edu.description|linebreaks }}</p>
+                </div>
+            {% empty %}<p class="text-secondary">No education listed yet.</p>{% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

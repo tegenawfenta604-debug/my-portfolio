@@ -1,0 +1,21 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Experience{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>Work Experience</h2></div>
+        <div class="timeline">
+            {% for exp in experiences %}
+                <div class="timeline-item reveal">
+                    <h5 class="mb-1">{{ exp.role }}</h5>
+                    <h6 class="text-brand">{{ exp.company }}</h6>
+                    <small class="text-secondary">{{ exp.start_date|date:"M Y" }} - {% if exp.current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}{% if exp.location %} · {{ exp.location }}{% endif %}</small>
+                    <p class="text-secondary mt-2">{{ exp.description|linebreaks }}</p>
+                </div>
+            {% empty %}<p class="text-secondary">No experience listed yet.</p>{% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

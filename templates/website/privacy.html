@@ -1,0 +1,22 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Privacy Policy{% endblock %}
+
+{% block content %}
+<section class="section pt-5">
+    <div class="container">
+        <div class="section-title reveal"><h2>Privacy Policy</h2></div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 reveal">
+                <p class="text-secondary">This website respects your privacy. This policy explains what data we collect and how it is used.</p>
+                <h5 class="mt-4">Information We Collect</h5>
+                <p class="text-secondary">When you submit the contact form, we collect your name, email address, and message solely to respond to your inquiry. We do not sell or share this information with third parties.</p>
+                <h5 class="mt-4">Cookies</h5>
+                <p class="text-secondary">We use local storage to remember your theme preference (light/dark mode). No tracking cookies are used.</p>
+                <h5 class="mt-4">Contact</h5>
+                <p class="text-secondary">If you have questions about this policy, please use the <a href="{% url 'contact' %}" class="text-brand">contact form</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
